@@ -1,0 +1,93 @@
+# macOS 系统文件
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 数据库文件
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+*.db
+
+# 日志文件
+logs/
+*.log
+
+# 缓存目录
+cache/
+
+# 编译输出
+dist/
+desktop/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Go 相关
+*.test
+*.out
+vendor/
+
+# 配置文件（包含敏感信息）
+config.yaml
+config.mysql.yaml
+config.json
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# IDE 配置
+.idea/
+.vscode/
+*.iml
+.claude/
+
+# 前端相关
+frontend/node_modules/
+frontend/dist/
+frontend/.next/
+frontend/build/
+frontend/.cache/
+
+# 图片文件（临时）
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# 测试覆盖率
+coverage/
+*.cover
+*.coverprofile
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 激活码/许可证相关（敏感文件）
+# 私钥和证书文件
+*.pem
+*.key
+*.crt
+
+# 激活码工具编译产物
+tools/license-gen/license-gen
+tools/license-gen-batch/license-gen-batch
+tools/license-verify-server/license-verify-server
+
+# 激活码相关缓存
+.machine_id_cache
+**/license-gen/.machine_id_cache
+**/license-gen-batch/.machine_id_cache
+
+# 生成的激活码文件
+*.license
+licenses/
+activations/

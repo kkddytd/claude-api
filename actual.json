@@ -1,0 +1,380 @@
+{
+  "test_cases": [
+    {
+      "name": "simple_message",
+      "data": {
+        "conversationState": {
+          "conversationId": "test-conv-001",
+          "history": [],
+          "currentMessage": {
+            "userInputMessage": {
+              "content": "Hello, world!",
+              "userInputMessageContext": {},
+              "origin": "CLI",
+              "modelId": "claude-sonnet-4"
+            }
+          },
+          "chatTriggerType": "MANUAL"
+        }
+      }
+    },
+    {
+      "name": "with_tools",
+      "data": {
+        "conversationState": {
+          "conversationId": "test-conv-002",
+          "history": [],
+          "currentMessage": {
+            "userInputMessage": {
+              "content": "Please read the file",
+              "userInputMessageContext": {
+                "envState": {
+                  "operatingSystem": "macos",
+                  "currentWorkingDirectory": "/"
+                },
+                "tools": [
+                  {
+                    "toolSpecification": {
+                      "name": "read_file",
+                      "description": "Read the contents of a file",
+                      "inputSchema": {
+                        "json": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "description": "File path"
+                            }
+                          },
+                          "required": [
+                            "path"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "toolSpecification": {
+                      "name": "write_file",
+                      "description": "Write content to a file",
+                      "inputSchema": {
+                        "json": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "content"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "origin": "CLI",
+              "modelId": "claude-sonnet-4.5"
+            }
+          },
+          "chatTriggerType": "MANUAL"
+        }
+      }
+    },
+    {
+      "name": "with_history",
+      "data": {
+        "conversationState": {
+          "conversationId": "test-conv-003",
+          "history": [
+            {
+              "userInputMessage": {
+                "content": "What is 2+2?",
+                "userInputMessageContext": {},
+                "origin": "CLI"
+              }
+            },
+            {
+              "assistantResponseMessage": {
+                "messageId": "msg-001",
+                "content": "2+2 equals 4."
+              }
+            }
+          ],
+          "currentMessage": {
+            "userInputMessage": {
+              "content": "What about 3+3?",
+              "userInputMessageContext": {},
+              "origin": "CLI",
+              "modelId": "claude-sonnet-4"
+            }
+          },
+          "chatTriggerType": "MANUAL"
+        }
+      }
+    },
+    {
+      "name": "with_tool_results",
+      "data": {
+        "conversationState": {
+          "conversationId": "test-conv-004",
+          "history": [],
+          "currentMessage": {
+            "userInputMessage": {
+              "content": "",
+              "userInputMessageContext": {
+                "envState": {
+                  "operatingSystem": "macos",
+                  "currentWorkingDirectory": "/"
+                },
+                "tools": [
+                  {
+                    "toolSpecification": {
+                      "name": "read_file",
+                      "description": "Read the contents of a file",
+                      "inputSchema": {
+                        "json": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "description": "File path"
+                            }
+                          },
+                          "required": [
+                            "path"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "toolSpecification": {
+                      "name": "write_file",
+                      "description": "Write content to a file",
+                      "inputSchema": {
+                        "json": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "content"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ],
+                "toolResults": [
+                  {
+                    "toolUseId": "tool-use-001",
+                    "content": [
+                      {
+                        "text": "File content here"
+                      }
+                    ],
+                    "status": "success"
+                  }
+                ]
+              },
+              "origin": "CLI",
+              "modelId": "claude-sonnet-4"
+            }
+          },
+          "chatTriggerType": "MANUAL"
+        }
+      }
+    },
+    {
+      "name": "with_images",
+      "data": {
+        "conversationState": {
+          "conversationId": "test-conv-005",
+          "history": [],
+          "currentMessage": {
+            "userInputMessage": {
+              "content": "What is in this image?",
+              "userInputMessageContext": {},
+              "origin": "CLI",
+              "modelId": "claude-sonnet-4.5",
+              "images": [
+                {
+                  "format": "png",
+                  "source": {
+                    "bytes": "base64encodeddata"
+                  }
+                }
+              ]
+            }
+          },
+          "chatTriggerType": "MANUAL"
+        }
+      }
+    },
+    {
+      "name": "full_scenario",
+      "data": {
+        "conversationState": {
+          "conversationId": "test-conv-006",
+          "history": [
+            {
+              "userInputMessage": {
+                "content": "Read the config file",
+                "userInputMessageContext": {
+                  "envState": {
+                    "operatingSystem": "macos",
+                    "currentWorkingDirectory": "/"
+                  },
+                  "tools": [
+                    {
+                      "toolSpecification": {
+                        "name": "read_file",
+                        "description": "Read file",
+                        "inputSchema": {
+                          "json": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "origin": "CLI"
+              }
+            },
+            {
+              "assistantResponseMessage": {
+                "messageId": "msg-002",
+                "content": "I'll read the file for you.",
+                "toolUses": [
+                  {
+                    "toolUseId": "tool-use-002",
+                    "name": "read_file",
+                    "input": {
+                      "path": "/config.json"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "userInputMessage": {
+                "content": "",
+                "userInputMessageContext": {
+                  "toolResults": [
+                    {
+                      "toolUseId": "tool-use-002",
+                      "content": [
+                        {
+                          "text": "{\"key\": \"value\"}"
+                        }
+                      ],
+                      "status": "success"
+                    }
+                  ]
+                },
+                "origin": "CLI"
+              }
+            },
+            {
+              "assistantResponseMessage": {
+                "messageId": "msg-003",
+                "content": "The config file contains a key-value pair."
+              }
+            }
+          ],
+          "currentMessage": {
+            "userInputMessage": {
+              "content": "Now update the value",
+              "userInputMessageContext": {
+                "envState": {
+                  "operatingSystem": "macos",
+                  "currentWorkingDirectory": "/"
+                },
+                "tools": [
+                  {
+                    "toolSpecification": {
+                      "name": "read_file",
+                      "description": "Read the contents of a file",
+                      "inputSchema": {
+                        "json": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string",
+                              "description": "File path"
+                            }
+                          },
+                          "required": [
+                            "path"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "toolSpecification": {
+                      "name": "write_file",
+                      "description": "Write content to a file",
+                      "inputSchema": {
+                        "json": {
+                          "type": "object",
+                          "properties": {
+                            "path": {
+                              "type": "string"
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "content"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "origin": "CLI",
+              "modelId": "claude-sonnet-4"
+            }
+          },
+          "chatTriggerType": "MANUAL"
+        }
+      }
+    },
+    {
+      "name": "with_profile_arn",
+      "data": {
+        "conversationState": {
+          "conversationId": "test-conv-007",
+          "history": [],
+          "currentMessage": {
+            "userInputMessage": {
+              "content": "Hello with profile",
+              "userInputMessageContext": {},
+              "origin": "CLI",
+              "modelId": "claude-sonnet-4"
+            }
+          },
+          "chatTriggerType": "MANUAL"
+        },
+        "profileArn": "arn:aws:codewhisperer:us-east-1:123456789:profile/example"
+      }
+    }
+  ]
+}

@@ -1,0 +1,601 @@
+/* ==================== 用户管理样式 ==================== */
+
+/* VIP 徽章样式 @author ygw */
+.vip-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffc107;
+    font-size: 14px;
+    margin-left: 4px;
+    animation: vipShine 2s ease-in-out infinite;
+}
+
+.vip-badge i {
+    color: #ffc107;
+}
+
+@keyframes vipShine {
+    0%, 100% {
+        filter: drop-shadow(0 0 2px rgba(255, 193, 7, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 6px rgba(255, 193, 7, 0.8));
+    }
+}
+
+.users-grid {
+    padding: var(--layout-content-padding) 24px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+    align-content: start;
+}
+
+.user-card {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.user-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    border-color: var(--color-accent-primary);
+}
+
+.user-card--disabled {
+    opacity: 0.6;
+}
+
+.user-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+.user-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user-card-title i {
+    color: var(--color-accent-primary);
+}
+
+.user-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-card-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    gap: 8px;
+}
+
+.user-card-field label {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.user-card-field span {
+    color: var(--color-text-primary);
+    text-align: right;
+}
+
+.user-api-key {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+}
+
+.user-api-key code {
+    background: var(--color-bg-input);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--color-text-secondary);
+}
+
+.btn-icon-tiny {
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon-tiny:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-accent-primary);
+}
+
+.user-card-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding-top: 4px;
+}
+
+.user-card-actions .btn {
+    flex: 1;
+    min-width: 70px;
+    font-size: 11px;
+    height: 28px;
+    padding: 0 8px;
+}
+
+/* ==================== 用户弹窗优化样式 ==================== */
+.user-modal {
+    max-width: 560px;
+}
+
+.user-modal .modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border-default);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-modal .modal-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.modal-header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-header-icon {
+    font-size: 24px;
+    color: var(--color-accent-primary);
+}
+
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 16px 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--color-border-default);
+}
+
+.form-section-title i {
+    color: var(--color-accent-primary);
+    font-size: 16px;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+}
+
+.form-label i {
+    color: var(--color-accent-primary);
+    font-size: 14px;
+}
+
+.form-hint {
+    display: block;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+}
+
+.toggle-label {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+}
+
+/* API Key 成功显示 */
+.api-key-success {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.success-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: successPulse 0.5s ease-out;
+}
+
+.success-icon i {
+    font-size: 36px;
+    color: white;
+}
+
+@keyframes successPulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.api-key-success h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 8px 0;
+}
+
+.api-key-success p {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 0 0 16px 0;
+}
+
+.api-key-display {
+    background: var(--color-bg-input);
+    padding: 12px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    word-break: break-all;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0;
+    border: 2px dashed var(--color-accent-primary);
+}
+
+.api-key-display code {
+    color: var(--color-accent-primary);
+    font-weight: 500;
+    flex: 1;
+}
+
+.btn--icon {
+    padding: 8px;
+    min-width: auto;
+    background: var(--color-accent-primary);
+    color: white;
+}
+
+.btn--icon:hover {
+    background: var(--color-accent-hover);
+}
+
+.api-key-notice {
+    background: #fff4e6;
+    border: 1px solid #ffa940;
+    color: #d46b08;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin-top: 12px;
+    display: flex;
+    align-items: start;
+    gap: 8px;
+}
+
+[data-theme="dark"] .api-key-notice {
+    background: #2a2315;
+    border-color: #b37a00;
+    color: #ffa940;
+}
+
+.api-key-notice i {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+/* 用户信息卡片 */
+.user-info-card {
+    background: var(--color-bg-input);
+    border: 1px solid var(--color-border-default);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.user-info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info-item i {
+    font-size: 18px;
+    color: var(--color-accent-primary);
+}
+
+.user-info-label {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-bottom: 2px;
+}
+
+.user-info-value {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+}
+
+/* 用户统计模态框 */
+/* 注意：.stats-summary 已废弃，改用全局 .stats-grid（在 components.css 中定义） */
+/* 保留此类用于向后兼容，但建议迁移到 .stats-grid */
+.stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+/* 以下类已废弃，改用 .stats-card、.stats-card-label、.stats-card-value */
+/* 保留用于向后兼容 */
+.stat-card {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-default);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.usage-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 16px;
+}
+
+.usage-table th {
+    background: var(--color-bg-input);
+    padding: 10px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    border-bottom: 2px solid var(--color-border-default);
+}
+
+.usage-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+.usage-table tr:hover {
+    background: var(--color-bg-hover);
+}
+
+.modal--large {
+    max-width: 900px;
+    max-height: 85vh;
+}
+
+.modal--large .modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border-default);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal--large .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.modal--large .modal-title i {
+    color: var(--color-accent-primary);
+    font-size: 18px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 768px) {
+    .users-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-summary {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .user-info-card {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================== 用户表单与交互增强 ==================== */
+
+/* 表单输入焦点增强 */
+.form-input:focus {
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.1);
+    background: var(--color-bg-elevated);
+    outline: none;
+}
+
+/* 表单提示文本 */
+.form-hint {
+    display: block;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* API Key 成功显示增强 */
+.api-key-success {
+    text-align: center;
+    padding: 24px 0;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: successPulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 8px 24px rgba(17, 153, 142, 0.3);
+}
+
+@keyframes successPulse {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-icon i {
+    font-size: 48px;
+    color: white;
+}
+
+/* API Key 显示框增强 */
+.api-key-display {
+    background: var(--color-bg-elevated);
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    border: 2px solid var(--color-accent-primary);
+    box-shadow: 0 4px 12px rgba(217, 119, 87, 0.15);
+}
+
+.api-key-display code {
+    color: var(--color-accent-primary);
+    font-weight: 600;
+    flex: 1;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.api-key-display button {
+    padding: 8px 16px;
+    background: var(--color-accent-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.api-key-display button:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(217, 119, 87, 0.3);
+}
+
+/* 切换开关标签增强 - 用户模态框专用 */
+.user-modal .toggle-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--color-bg-input);
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 16px;
+}
+
+.user-modal .toggle-wrapper:hover {
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.toggle-label-text {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--color-text-primary);
+}

@@ -1,0 +1,18 @@
+database:
+  type: mysql
+  mysql:
+    host: localhost
+    port: 3306
+    user: root
+    password: Bianhao89757!
+    database: claude-api
+    charset: utf8mb4
+
+server:
+  host: 0.0.0.0
+  port: 62311
+
+debug: false
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'Bianhao89757!';
+FLUSH PRIVILEGES;

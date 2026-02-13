@@ -1,0 +1,219 @@
+/* ==================== 服务日志页面样式 ==================== */
+
+.server-logs-container {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    height: calc(100vh - 220px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.server-logs-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    background: #1e1e1e;
+}
+
+.server-logs-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    gap: 12px;
+}
+
+.server-logs-empty i {
+    font-size: 48px;
+    opacity: 0.5;
+}
+
+.server-logs-empty p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.server-logs-list {
+    padding: 12px 16px;
+    padding-bottom: 28px; /* 底部留一行空间，让最新日志显示在倒数第二行 */
+}
+
+.server-log-line {
+    display: flex;
+    gap: 8px;
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.server-log-line:last-child {
+    border-bottom: none;
+}
+
+.server-log-line .log-time {
+    color: #6a9955;
+    flex-shrink: 0;
+    min-width: 90px;
+}
+
+.server-log-line .log-level {
+    flex-shrink: 0;
+    min-width: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.server-log-line .log-level.log-level--info {
+    color: #4fc3f7;
+}
+
+.server-log-line .log-level.log-level--warn {
+    color: #ffb74d;
+}
+
+.server-log-line .log-level.log-level--error {
+    color: #ef5350;
+}
+
+.server-log-line .log-level.log-level--debug {
+    color: #9e9e9e;
+}
+
+.server-log-line .log-source {
+    color: #808080;
+    flex-shrink: 0;
+}
+
+.server-log-line .log-message {
+    color: #d4d4d4;
+    word-break: break-all;
+    flex: 1;
+}
+
+.server-log-line.log-level--error {
+    background: rgba(239, 83, 80, 0.1);
+}
+
+.server-log-line.log-level--warn {
+    background: rgba(255, 183, 77, 0.1);
+}
+
+/* 日志关键词高亮 */
+.log-hl-method {
+    color: #c586c0;
+    font-weight: 600;
+}
+
+.log-hl-path {
+    color: #4ec9b0;
+    font-weight: 500;
+}
+
+.log-hl-ip {
+    color: #9cdcfe;
+}
+
+.log-hl-model {
+    color: #c792ea;
+    font-weight: 500;
+}
+
+.log-hl-duration {
+    color: #82aaff;
+    font-weight: 500;
+}
+
+.log-hl-status {
+    color: #ef5350;
+    font-weight: 500;
+}
+
+.log-hl-success {
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.log-hl-token {
+    color: #ffcb6b;
+    font-weight: 500;
+}
+
+/* 复选框标签样式 */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.checkbox-label span {
+    white-space: nowrap;
+}
+
+/* 状态徽章样式扩展 */
+.stats-badge.badge--success {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4caf50;
+}
+
+.stats-badge.badge--error {
+    background: rgba(239, 83, 80, 0.15);
+    color: #ef5350;
+}
+
+.stats-badge i {
+    margin-right: 4px;
+}
+
+/* 日志级别下拉框样式 */
+.log-level-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 8px 32px 8px 12px;
+    border: 1px solid var(--color-border-default);
+    border-radius: 8px;
+    background: var(--color-bg-elevated);
+    color: var(--color-text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    min-width: 120px;
+}
+
+.log-level-select:hover {
+    border-color: var(--color-accent-primary);
+    background-color: var(--color-bg-base);
+}
+
+.log-level-select:focus {
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.15);
+}
+
+.log-level-select option {
+    padding: 8px 12px;
+    background: var(--color-bg-elevated);
+    color: var(--color-text-primary);
+}
+

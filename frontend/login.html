@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无限畅享版</title>
+    <link rel="icon" type="image/svg+xml" href="/frontend/img/claude-color.svg">
+    <script>
+        // 在页面渲染前设置主题，避免闪烁
+        (function() {
+            var theme = localStorage.getItem('theme') ||
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    <link href="/frontend/vendor/css/remixicon.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Claude-like Color Palette - Refined */
+            --bg-body: #f5f4f1;
+            /* Warmer, paper-like background */
+            --bg-card: #ffffff;
+            --text-primary: #333331;
+            /* Softer black */
+            --text-secondary: #666666;
+            --border-color: #e0e0e0;
+            --accent-color: #da7756;
+            /* Terracotta */
+            --accent-hover: #c76a4b;
+            --focus-ring: rgba(218, 119, 86, 0.25);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.06);
+            --font-serif: "Söhne", "Iowan Old Style", "Apple Garamond", Baskerville, "Times New Roman", "Droid Serif", Times, "Source Serif Pro", serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            --font-sans: "Söhne", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --transition-normal: 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode - Deep & Muted */
+            --bg-body: #0f0f0f;
+            --bg-card: #1e1e1e;
+            --text-primary: #f0f0f0;
+            --text-secondary: #9e9e9e;
+            --border-color: #2d2d2d;
+            --accent-color: #e88b6a;
+            --accent-hover: #f09d7e;
+            --focus-ring: rgba(232, 139, 106, 0.35);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color var(--transition-normal),
+                        border-color var(--transition-normal),
+                        color var(--transition-normal),
+                        box-shadow var(--transition-normal);
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--bg-card);
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 380px;
+            /* Slightly narrower for elegance */
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-images {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .logo-icon-img {
+            height: 56px;
+            width: auto;
+        }
+
+        .logo-text-img {
+            height: 40px;
+            width: auto;
+        }
+
+        /* 浅色主题 */
+        .logo-icon-img--light { display: block; }
+        .logo-icon-img--dark { display: none; }
+        .logo-text-img--light { display: block; }
+        .logo-text-img--dark { display: none; }
+
+        /* 深色主题 */
+        [data-theme="dark"] .logo-icon-img--light { display: none; }
+        [data-theme="dark"] .logo-icon-img--dark { display: block; }
+        [data-theme="dark"] .logo-text-img--light { display: none; }
+        [data-theme="dark"] .logo-text-img--dark { display: block; }
+
+        .logo h1 {
+            font-family: var(--font-serif);
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 40px 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input[type="password"]:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px var(--focus-ring);
+            background: var(--bg-card);
+        }
+
+        input[type="password"]::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            color: white;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(218, 119, 86, 0.2);
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(218, 119, 86, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--accent-color);
+        }
+
+        .footer-logo {
+            height: 16px;
+            width: auto;
+        }
+
+        .footer-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .footer-link:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(8px);
+        }
+
+        .toast.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background-color: rgba(45, 138, 86, 0.95);
+        }
+
+        .toast.error {
+            background-color: rgba(209, 77, 77, 0.95);
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="theme-toggle" id="themeToggle" title="切换主题">
+        <i class="ri-moon-line"></i>
+    </button>
+
+    <div class="login-container">
+        <div class="logo">
+            <div class="logo-images">
+                <img src="/frontend/img/claude-color-light.svg" alt="Claude" class="logo-icon-img logo-icon-img--light">
+                <img src="/frontend/img/claude-color-dark.svg" alt="Claude" class="logo-icon-img logo-icon-img--dark">
+                <img src="/frontend/img/claude-text-light.svg" alt="Claude" class="logo-text-img logo-text-img--light">
+                <img src="/frontend/img/claude-text-dark.svg" alt="Claude" class="logo-text-img logo-text-img--dark">
+            </div>
+            <h1>欢迎回来</h1>
+            <p>登录 Claude 无限畅享版</p>
+        </div>
+
+        <div class="card">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="password">管理员密码</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="password" placeholder="请输入密码" required autofocus>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn" id="loginButton">
+                    <span class="btn-text">登 录</span>
+                </button>
+            </form>
+        </div>
+
+        <div class="footer">
+        </div>
+    </div>
+
+    <script>
+        // Theme Management - Using simple approach for login page
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            icon.className = theme === 'dark' ? 'ri-sun-line' : 'ri-moon-line';
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        setTheme(savedTheme);
+
+        // Listen for system theme changes
+        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        darkModeMediaQuery.addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        });
+
+        // Login Logic
+        const form = document.getElementById('loginForm');
+        const btn = document.getElementById('loginButton');
+        const btnText = btn.querySelector('.btn-text');
+        const passwordInput = document.getElementById('password');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            btn.disabled = true;
+            const originalText = btnText.textContent;
+            btnText.innerHTML = '<div class="spinner"></div>';
+
+            try {
+                const formData = new FormData(form);
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: formData.get('password') })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('adminPassword', formData.get('password'));
+                    localStorage.setItem('current_tab', 'home');
+                    showToast('登录成功，正在跳转...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 800);
+                } else {
+                    showToast(data.message || '密码错误', 'error');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                    btn.disabled = false;
+                    btnText.textContent = originalText;
+                }
+            } catch (error) {
+                showToast('网络错误，请重试', 'error');
+                btn.disabled = false;
+                btnText.textContent = originalText;
+            }
+        });
+
+        function showToast(message, type = 'error') {
+            // Remove existing toast
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+
+            const iconClass = type === 'success' ? 'ri-checkbox-circle-line' : 'ri-error-warning-line';
+
+            toast.innerHTML = `
+                <i class="${iconClass}"></i>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(toast);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                toast.classList.add('visible');
+            });
+
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // 水印功能
+        (function() {
+            const watermarkText = 'Claude 无限畅享版';
+
+            function generateWatermarkBg() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 200;
+                canvas.height = 120;
+                const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+                ctx.font = '16px "PingFang SC", "Microsoft YaHei", sans-serif';
+                ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(-20 * Math.PI / 180);
+                ctx.fillText(watermarkText, 0, 0);
+                return canvas.toDataURL('image/png');
+            }
+
+            const container = document.createElement('div');
+            container.id = 'watermark-container';
+            container.style.cssText = `position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99999; background-image: url(${generateWatermarkBg()}); background-repeat: repeat;`;
+            document.body.appendChild(container);
+
+            // 监听主题变化更新水印
+            const themeObserver = new MutationObserver(() => {
+                container.style.backgroundImage = `url(${generateWatermarkBg()})`;
+            });
+            themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+        })();
+    </script>
+</body>
+
+</html>
