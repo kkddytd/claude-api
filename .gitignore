@@ -61,6 +61,12 @@ frontend/.cache/
 *.jpeg
 *.gif
 
+# 但允许展示图目录的图片
+!展示图/*.png
+!展示图/*.jpg
+!展示图/*.jpeg
+!展示图/*.gif
+
 # 测试覆盖率
 coverage/
 *.cover
