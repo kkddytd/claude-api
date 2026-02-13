@@ -12,15 +12,15 @@
 
 <div align="center">
 
+![](展示图/dashboard.png)
 
-!(展示图/dashboard.png)
+![](展示图/accounts.png)
 
-!(展示图/accounts.png)
-!(展示图/chat.png)
+![](展示图/chat.png)
 
-!(展示图/settings.png)
+![](展示图/settings.png)
 
-!(展示图/logs.png)
+![](展示图/logs.png)
 
 </div>
 
