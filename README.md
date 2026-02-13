@@ -12,20 +12,15 @@
 
 <div align="center">
 
-### 控制台主界面
-![控制台主界面](展示图/dashboard.png)
 
-### 账号管理
-![账号管理](展示图/accounts.png)
+(展示图/dashboard.png)
 
-### 聊天测试
-![聊天测试](展示图/chat.png)
+(展示图/accounts.png)
+(展示图/chat.png)
 
-### 系统设置
-![系统设置](展示图/settings.png)
+(展示图/settings.png)
 
-### 请求日志
-![请求日志](展示图/logs.png)
+(展示图/logs.png)
 
 </div>
 
