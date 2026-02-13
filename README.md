@@ -1,9 +1,12 @@
-# Claude API 开源代理服务
+# Claude API - AWS Kiro 账号池管理 | OpenAI 兼容代理服务
 
 [![Go Version](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat&logo=go)](https://golang.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/kkddytd/claude-api?style=social)](https://github.com/kkddytd/claude-api)
 
-将 Amazon Q API 转换为 OpenAI 兼容格式的高性能 Go 代理服务。支持多账号管理、自动令牌刷新、流式响应、完整的 Web 管理控制台。
+**AWS Kiro 账号池管理系统** - 将 Amazon Q Developer (Kiro) API 转换为 OpenAI 兼容格式的企业级 Go 代理服务。支持多账号池管理、OIDC 自动认证、令牌自动刷新、流式响应、完整的 Web 管理控制台。
+
+**关键词**: AWS Kiro, Amazon Q Developer, Claude API, OpenAI Proxy, 账号池管理, OIDC 认证, Go 代理服务, 多账号管理, API 转换, 企业级代理
 
 ## 📸 界面预览
 
@@ -39,41 +42,65 @@
 
 ## ✨ 核心特性
 
-### 🔄 API 转换
-- **OpenAI 兼容**: 完全兼容 OpenAI Chat Completions API
+### 🏊 AWS Kiro 账号池管理
+- **多账号池**: 支持最多 100 个 AWS Kiro (Amazon Q Developer) 账号统一管理
+- **OIDC 自动认证**: 完整的 AWS OIDC 设备授权流程，无需手动获取令牌
+- **智能负载均衡**: 自动选择可用账号，均衡分配请求负载
+- **令牌自动刷新**: 后台自动检测并刷新过期的 AWS 令牌，保持账号池持续可用
+- **账号状态监控**: 实时监控每个 Kiro 账号的健康状态、使用次数、最后使用时间
+- **批量导入导出**: 支持批量添加、导入、导出 AWS Kiro 账号配置
+
+### 🔄 API 格式转换
+- **OpenAI 兼容**: 完全兼容 OpenAI Chat Completions API 格式
 - **Claude 支持**: 支持 Claude Messages API 格式
-- **流式响应**: SSE 流式输出
+- **流式响应**: SSE (Server-Sent Events) 流式输出
 - **工具调用**: 完整支持 Function Calling / Tool Use
-- **模型支持**: Claude 4.5 Opus、Sonnet 4.5、Sonnet 3.5
+- **模型映射**: Claude 4.5 Opus、Sonnet 4.5、Sonnet 3.5 自动映射到 Amazon Q
 
-### 🔐 账号管理
-- **OIDC 认证**: AWS OIDC 设备授权流程
-- **多账号池**: 支持最多 100 个账号
-- **自动刷新**: 后台自动刷新过期令牌
-- **批量操作**: 批量添加、导入、导出账号
-
-### 🖥️ 管理控制台
-- **Web 界面**: Vue.js 驱动的现代化控制台
-- **实时监控**: 账号状态、使用统计
-- **在线测试**: 内置聊天测试界面
-- **请求日志**: 完整的请求日志和统计
-
-### 🛡️ 安全控制
-- **IP 黑名单**: 封禁/解封特定 IP
-- **频率限制**: 可配置的访问频率限制
-- **API Key 认证**: 自定义 API Key
+### 🔐 企业级安全
+- **API Key 认证**: 自定义 API Key 保护服务访问
 - **密码保护**: 管理控制台密码保护
+- **IP 黑名单**: 支持封禁/解封特定 IP 地址
+- **频率限制**: 可配置的 IP 和 API Key 双重限流
+
+### 🖥️ Web 管理控制台
+- **现代化界面**: Vue.js 3 驱动的响应式 Web 控制台
+- **账号池监控**: 实时查看所有 AWS Kiro 账号状态、令牌有效期、使用统计
+- **在线测试**: 内置聊天测试界面，支持流式对话
+- **请求日志**: 完整的 API 请求日志、统计图表、错误追踪
+- **批量操作**: 批量添加、删除、刷新 Kiro 账号
+- **系统设置**: 可视化配置 API Key、限流规则、日志保留策略
 
 ## 🚀 快速开始
 
-### 从源码编译
+### 方式一：下载预编译版本（推荐）
+
+从 [Releases](https://github.com/kkddytd/claude-api/releases) 下载对应平台的压缩包：
+
+```bash
+# Linux AMD64
+wget https://github.com/kkddytd/claude-api/releases/latest/download/claude-server-linux-amd64.tar.gz
+tar -xzf claude-server-linux-amd64.tar.gz
+./claude-server
+
+# macOS (Apple Silicon)
+wget https://github.com/kkddytd/claude-api/releases/latest/download/claude-server-darwin-arm64.tar.gz
+tar -xzf claude-server-darwin-arm64.tar.gz
+./claude-server
+
+# Windows
+# 下载 claude-server-windows-amd64.zip 并解压
+# 双击运行 claude-server.exe
+```
+
+### 方式二：从源码编译
 
 ```bash
 # 克隆仓库
-git clone https://github.com/your-repo/claude-api.git
+git clone https://github.com/kkddytd/claude-api.git
 cd claude-api
 
-# 安装依赖
+# 安装 Go 依赖
 go mod download
 
 # 编译
@@ -83,7 +110,12 @@ go build -o claude-server main.go
 ./claude-server
 ```
 
-访问控制台：打开浏览器访问 `http://localhost:62311`，默认密码：`admin`
+**首次使用**：
+1. 访问控制台：`http://localhost:62311`
+2. 默认密码：`admin`（首次登录后请立即修改）
+3. 添加 AWS Kiro 账号：点击"账号管理" → "添加账号" → 完成 OIDC 授权
+4. 配置 API Key：点击"系统设置" → 设置自定义 API Key
+5. 开始使用：使用 OpenAI SDK 连接到 `http://localhost:62311/v1`
 
 ## 🔨 编译构建
 
