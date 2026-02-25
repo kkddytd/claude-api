@@ -44,7 +44,7 @@ type DatabaseConfig struct {
 type ServerConfig struct {
 	Host string `yaml:"host" json:"host"`
 	Port int    `yaml:"port" json:"port"`
-}
+} 
 
 // Config 应用配置
 type Config struct {
