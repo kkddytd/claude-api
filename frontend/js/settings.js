@@ -41,7 +41,7 @@ export const settingsMixin = {
                 proxyPoolStrategy: 'round_robin',
                 // 智能压缩配置
                 compressionEnabled: false,
-                compressionModel: 'claude-sonnet-4-5-20250929',
+                compressionModel: 'claude-sonnet-4.5',
                 supportedCompressionModels: [],
                         // 强制模型配置
                         forceModelEnabled: false,

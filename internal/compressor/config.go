@@ -43,7 +43,7 @@ func DefaultConfig() *CompressConfig {
 		KeepMessageCount:       6,
 		MaxToolLookback:        10,
 		MaxBatchChars:          80000,
-		SummaryModel:           "claude-sonnet-4-5-20250929",
+		SummaryModel:           "claude-sonnet-4.5",
 		MaxSingleSummaryTokens: 25000,
 		CacheEnabled:           true,
 		CacheDir:               "cache/summaries",

@@ -97,19 +97,23 @@ type SettingsUpdate struct {
 	QuotaRefreshInterval    *int `json:"quotaRefreshInterval"`
 }
 
-// 支持的压缩模型列表
+// 支持的压缩模型列表（使用短名称，与聊天会话一致）
 var SupportedCompressionModels = []string{
-	"claude-haiku-4-5-20251001",
-	"claude-sonnet-4-5-20250929",
-	"claude-opus-4-5-20251101",
+	"claude-haiku-4.5",
+	"claude-sonnet-4.5",
+	"claude-opus-4.5",
+	"claude-sonnet-4.6",
+	"claude-opus-4.6",
 }
 
-// 支持的强制模型列表（用于 API 请求）
+// 支持的强制模型列表（使用短名称，与聊天会话一致）
 var SupportedForceModels = []string{
-	"claude-haiku-4-5-20251001",
-	"claude-sonnet-4-5-20250929",
-	"claude-opus-4-5-20251101",
+	"claude-haiku-4.5",
+	"claude-sonnet-4.5",
+	"claude-opus-4.5",
+	"claude-sonnet-4.6",
+	"claude-opus-4.6",
 }
 
 // DefaultCompressionModel 默认压缩模型
-const DefaultCompressionModel = "claude-sonnet-4-5-20250929"
+const DefaultCompressionModel = "claude-sonnet-4.5"

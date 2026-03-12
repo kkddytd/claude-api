@@ -71,9 +71,9 @@ export const chatMixin = {
                 console.error('获取模型列表失败:', error);
                 // 使用备用默认值
                 this.chatModels = [
-                    {id: 'claude-opus-4.5-think', name: 'Claude Opus 4.5 (Think)', description: '最强推理+深度思考', default: true, thinking: true, baseModel: 'claude-opus-4.5'}
+                    {id: 'claude-opus-4.6-think', name: 'Claude Opus 4.6 (Think)', description: '最新最强+深度思考', default: true, thinking: true, baseModel: 'claude-opus-4.6'}
                 ];
-                this.chatModel = 'claude-opus-4.5-think';
+                this.chatModel = 'claude-opus-4.6-think';
             }
         },
 

@@ -40,6 +40,8 @@ var validModels = map[string]bool{
 	"claude-sonnet-4.5": true,
 	"claude-haiku-4.5":  true,
 	"claude-opus-4.5":   true,
+	"claude-opus-4.6":   true,
+	"claude-sonnet-4.6": true,
 }
 
 // 规范模型名称到短名称的映射
@@ -49,6 +51,10 @@ var canonicalToShort = map[string]string{
 	"claude-sonnet-4-5":          "claude-sonnet-4.5",
 	"claude-haiku-4-5-20251001":  "claude-haiku-4.5",
 	"claude-opus-4-5-20251101":   "claude-opus-4.5",
+	"claude-opus-4-6-20260307":   "claude-opus-4.6",
+	"claude-opus-4-6":            "claude-opus-4.6",
+	"claude-sonnet-4-6-20260307": "claude-sonnet-4.6",
+	"claude-sonnet-4-6":          "claude-sonnet-4.6",
 	// Claude 3.5 Sonnet 旧版映射
 	"claude-3-5-sonnet-20241022": "claude-sonnet-4.5",
 	"claude-3-5-sonnet-20240620": "claude-sonnet-4.5",

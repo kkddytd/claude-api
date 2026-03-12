@@ -1,5 +1,42 @@
 # 更新日志
 
+## v1.2.1 (2026-03-12)
+
+### 新增功能
+
+#### Claude 4.6 模型支持
+- ✅ 新增 Claude Opus 4.6 模型支持
+- ✅ 新增 Claude Sonnet 4.6 模型支持
+- ✅ 支持完整规范名称映射（如 claude-opus-4-6-20260307）
+- ✅ 前端聊天控制台默认使用 Claude Opus 4.6 Think 模型
+
+### 系统优化
+
+#### 模型名称统一
+- ✅ 统一所有模型名称为短名称格式（如 claude-opus-4.6）
+- ✅ 智能压缩模型列表使用短名称
+- ✅ 强制模型列表使用短名称
+- ✅ 提升用户体验，避免模型名称混淆
+
+#### 配置优化
+- ✅ 默认压缩模型更新为 claude-sonnet-4.5
+- ✅ 前端默认压缩模型更新为 claude-sonnet-4.5
+
+### 技术细节
+
+#### 后端
+- 更新 `internal/claude/converter.go` - 添加 4.6 模型映射
+- 更新 `internal/models/settings.go` - 更新支持的模型列表
+- 更新 `internal/compressor/config.go` - 更新默认压缩模型
+- 更新 `internal/api/handlers.go` - 添加 4.6 模型选项
+
+#### 前端
+- 更新 `frontend/js/chat.js` - 默认模型改为 claude-opus-4.6-think
+- 更新 `frontend/js/settings.js` - 默认压缩模型改为短名称
+- 更新 `frontend/index.html` - 添加 4.6 模型说明
+
+---
+
 ## v1.2.0 (2026-03-12)
 
 ### 新增功能

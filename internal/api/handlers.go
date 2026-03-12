@@ -1834,8 +1834,12 @@ func (s *Server) handleGetModels(c *gin.Context) {
 
 	models := []gin.H{
 		{"id": "auto", "name": "自动选择", "description": "自动选择最佳模型", "default": false, "thinking": false},
-		{"id": "claude-opus-4.5", "name": "Claude Opus 4.5", "description": "最强推理能力", "default": false, "thinking": false},
-		{"id": "claude-opus-4.5-think", "name": "Claude Opus 4.5 (Think)", "description": "最强推理+深度思考", "default": true, "thinking": true, "baseModel": "claude-opus-4.5"},
+		{"id": "claude-opus-4.6", "name": "Claude Opus 4.6", "description": "最新最强推理能力", "default": false, "thinking": false},
+		{"id": "claude-opus-4.6-think", "name": "Claude Opus 4.6 (Think)", "description": "最新最强+深度思考", "default": true, "thinking": true, "baseModel": "claude-opus-4.6"},
+		{"id": "claude-sonnet-4.6", "name": "Claude Sonnet 4.6", "description": "最新平衡性能与速度", "default": false, "thinking": false},
+		{"id": "claude-sonnet-4.6-think", "name": "Claude Sonnet 4.6 (Think)", "description": "最新平衡+深度思考", "default": false, "thinking": true, "baseModel": "claude-sonnet-4.6"},
+		{"id": "claude-opus-4.5", "name": "Claude Opus 4.5", "description": "强推理能力", "default": false, "thinking": false},
+		{"id": "claude-opus-4.5-think", "name": "Claude Opus 4.5 (Think)", "description": "强推理+深度思考", "default": false, "thinking": true, "baseModel": "claude-opus-4.5"},
 		{"id": "claude-sonnet-4.5", "name": "Claude Sonnet 4.5", "description": "平衡性能与速度", "default": false, "thinking": false},
 		{"id": "claude-sonnet-4.5-think", "name": "Claude Sonnet 4.5 (Think)", "description": "平衡性能+深度思考", "default": false, "thinking": true, "baseModel": "claude-sonnet-4.5"},
 		{"id": "claude-haiku-4.5", "name": "Claude Haiku 4.5", "description": "轻量高效", "default": false, "thinking": false},
