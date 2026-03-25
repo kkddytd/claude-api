@@ -1,0 +1,25 @@
+services:
+  claude-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GOPROXY: "${GOPROXY:-https://proxy.golang.org,direct}"
+    image: claude-api:local
+    container_name: claude-api
+    restart: unless-stopped
+    ports:
+      - "${CLAUDE_API_PORT:-62311}:62311"
+    volumes:
+      - claude_api_data:/data
+      # 如果需要自定义配置，把示例复制为 ./docker/config.yaml 后取消下一行注释
+      # - ./docker/config.yaml:/data/config.yaml:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:62311/healthz >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  claude_api_data:

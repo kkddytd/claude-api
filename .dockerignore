@@ -1,0 +1,10 @@
+.git
+.build-cache
+dist
+docker-data
+logs
+*.log
+.DS_Store
+claude-server
+data.sqlite3
+展示图

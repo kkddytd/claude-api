@@ -29,6 +29,13 @@ desktop/
 *.test
 *.out
 vendor/
+!frontend/vendor/
+!frontend/vendor/css/
+!frontend/vendor/css/*
+!frontend/vendor/fonts/
+!frontend/vendor/fonts/*
+!frontend/vendor/js/
+!frontend/vendor/js/*
 
 # 配置文件（包含敏感信息）
 config.yaml
