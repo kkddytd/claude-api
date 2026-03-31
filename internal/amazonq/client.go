@@ -2,6 +2,10 @@ package amazonq
 
 import (
 	"bytes"
+	"claude-api/internal/auth"
+	"claude-api/internal/config"
+	"claude-api/internal/logger"
+	proxypool "claude-api/internal/proxy"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -11,10 +15,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"claude-api/internal/auth"
-	"claude-api/internal/config"
-	"claude-api/internal/logger"
-	proxypool "claude-api/internal/proxy"
 	"strings"
 	"sync"
 	"time"
@@ -580,7 +580,7 @@ type EventInfo struct {
 // @author ygw
 func (c *Client) GetUsageLimits(ctx context.Context, accessToken, machineId, resourceType string) (map[string]interface{}, error) {
 	startTime := time.Now()
-	
+
 	if resourceType == "" {
 		resourceType = "AGENTIC_REQUEST"
 	}
@@ -602,7 +602,7 @@ func (c *Client) GetUsageLimits(ctx context.Context, accessToken, machineId, res
 	requestStartTime := time.Now()
 	resp, err := c.httpClient.Do(req)
 	requestElapsed := time.Since(requestStartTime)
-	
+
 	if err != nil {
 		logger.Error("配额查询 HTTP 请求失败 - URL: %s, 耗时: %.0fms, 错误: %v", url, requestElapsed.Seconds()*1000, err)
 		return nil, fmt.Errorf("请求失败: %w", err)

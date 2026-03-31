@@ -17,15 +17,15 @@ type SimulatedBlock struct {
 
 // SimulationResult 模拟结果
 type SimulationResult struct {
-	Round           int
-	TotalMessages   int
-	CacheHit        bool
-	ReusedBlocks    int
-	NewBlockCreated bool
-	NewBlockRange   string
-	TotalBlocks     int
-	KeepMessages    int
-	FinalStructure  string
+	Round              int
+	TotalMessages      int
+	CacheHit           bool
+	ReusedBlocks       int
+	NewBlockCreated    bool
+	NewBlockRange      string
+	TotalBlocks        int
+	KeepMessages       int
+	FinalStructure     string
 	TotalSummaryTokens int
 }
 

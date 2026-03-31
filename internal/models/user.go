@@ -18,6 +18,7 @@ type User struct {
 	TotalTokensUsed  int64   `gorm:"column:total_tokens_used;default:0" json:"total_tokens_used"`
 	TotalRequests    int64   `gorm:"column:total_requests;default:0" json:"total_requests"`       // 总请求次数 @author ygw
 	TotalCostUSD     float64 `gorm:"column:total_cost_usd;default:0" json:"total_cost_usd"`       // 总消费金额（美元）@author ygw
+	ExpiresAt        *int64  `gorm:"column:expires_at" json:"expires_at,omitempty"`               // 过期时间（Unix时间戳），null表示永不过期 @author ygw
 	LastResetDaily   *string `gorm:"column:last_reset_daily;size:50" json:"last_reset_daily,omitempty"`
 	LastResetMonthly *string `gorm:"column:last_reset_monthly;size:50" json:"last_reset_monthly,omitempty"`
 	ExpiresAt        *int64  `gorm:"column:expires_at;index" json:"expires_at,omitempty"`         // 过期时间（Unix时间戳），nil表示永不过期

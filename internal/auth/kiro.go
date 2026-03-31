@@ -2,14 +2,14 @@ package auth
 
 import (
 	"bytes"
+	"claude-api/internal/config"
+	"claude-api/internal/logger"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
-	"claude-api/internal/config"
-	"claude-api/internal/logger"
 	"time"
 
 	"github.com/google/uuid"

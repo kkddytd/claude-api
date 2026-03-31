@@ -46,13 +46,13 @@ type SummaryCache struct {
 // SummaryBlock 单个摘要块
 // @author ygw
 type SummaryBlock struct {
-	BlockID     string    `json:"block_id"`       // 块唯一标识
-	MsgStartIdx int       `json:"msg_start_idx"`  // 起始消息索引
-	MsgEndIdx   int       `json:"msg_end_idx"`    // 结束消息索引（不含）
-	MsgHash     string    `json:"msg_hash"`       // 该块消息的 hash
-	Summary     string    `json:"summary"`        // 摘要内容
-	TokenCount  int       `json:"token_count"`    // 摘要 token 数
-	CreatedAt   time.Time `json:"created_at"`     // 创建时间
+	BlockID     string    `json:"block_id"`      // 块唯一标识
+	MsgStartIdx int       `json:"msg_start_idx"` // 起始消息索引
+	MsgEndIdx   int       `json:"msg_end_idx"`   // 结束消息索引（不含）
+	MsgHash     string    `json:"msg_hash"`      // 该块消息的 hash
+	Summary     string    `json:"summary"`       // 摘要内容
+	TokenCount  int       `json:"token_count"`   // 摘要 token 数
+	CreatedAt   time.Time `json:"created_at"`    // 创建时间
 }
 
 // ConversationCache 对话级压缩缓存（分块模式）

@@ -1,11 +1,11 @@
 package database
 
 import (
+	"claude-api/internal/logger"
+	"claude-api/internal/models"
 	"context"
 	"encoding/json"
 	"fmt"
-	"claude-api/internal/logger"
-	"claude-api/internal/models"
 	"time"
 
 	"github.com/google/uuid"
@@ -926,7 +926,6 @@ func (db *DB) GetAccountsForQuotaRefresh(ctx context.Context) ([]*models.Account
 		Find(&accounts).Error
 	return accounts, err
 }
-
 
 // EnableAllAccounts 批量启用所有账号（排除已封控的账号）
 // @author ygw

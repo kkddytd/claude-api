@@ -177,11 +177,11 @@ func (s *Server) handleBatchCreateVIPUsers(c *gin.Context) {
 			CreatedAt:       time.Now().Format(time.RFC3339),
 			UpdatedAt:       time.Now().Format(time.RFC3339),
 			Enabled:         true,
-			IsVip:           true,          // VIP用户
-			DailyQuota:      0,             // Token不限制
-			MonthlyQuota:    0,             // Token不限制
-			RequestQuota:    1000,          // 每日请求限制1000次
-			RateLimitRPM:    10,            // 频率限制10次/分钟 @author ygw
+			IsVip:           true, // VIP用户
+			DailyQuota:      0,    // Token不限制
+			MonthlyQuota:    0,    // Token不限制
+			RequestQuota:    1000, // 每日请求限制1000次
+			RateLimitRPM:    10,   // 频率限制10次/分钟 @author ygw
 			TotalTokensUsed: 0,
 			TotalRequests:   0,
 			TotalCostUSD:    0,
@@ -312,7 +312,6 @@ func (s *Server) handleGetUserStats(c *gin.Context) {
 		c.JSON(500, gin.H{"error": "获取用户统计失败"})
 		return
 	}
-
 
 	// 计算美元成本
 	// @author ygw
