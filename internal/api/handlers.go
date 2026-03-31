@@ -329,7 +329,7 @@ func (s *Server) handleListAccounts(c *gin.Context) {
 
 	// 分页参数 @author ygw
 	page := 1
-	pageSize := 100
+	pageSize := 1000
 	if pageParam := c.Query("page"); pageParam != "" {
 		if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
 			page = p
@@ -338,8 +338,8 @@ func (s *Server) handleListAccounts(c *gin.Context) {
 	if pageSizeParam := c.Query("pageSize"); pageSizeParam != "" {
 		if ps, err := strconv.Atoi(pageSizeParam); err == nil && ps > 0 {
 			pageSize = ps
-			if pageSize > 500 {
-				pageSize = 500 // 限制最大每页数量
+			if pageSize > 1000 {
+				pageSize = 1000 // 限制最大每页数量
 			}
 		}
 	}
