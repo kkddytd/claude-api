@@ -28,7 +28,6 @@ desktop/
 # Go 相关
 *.test
 *.out
-vendor/
 
 # 配置文件（包含敏感信息）
 config.yaml
@@ -97,3 +96,6 @@ tools/license-verify-server/license-verify-server
 *.license
 licenses/
 activations/
+
+.omc
+.build-cache

@@ -2,13 +2,6 @@ package api
 
 import (
 	"bufio"
-	"context"
-	"encoding/json"
-	"fmt"
-	"io"
-	"net/http"
-	"os"
-	"path/filepath"
 	"claude-api/internal/amazonq"
 	"claude-api/internal/auth"
 	"claude-api/internal/claude"
@@ -19,6 +12,13 @@ import (
 	"claude-api/internal/stream"
 	"claude-api/internal/sync"
 	"claude-api/internal/tokenizer"
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -329,7 +329,7 @@ func (s *Server) handleListAccounts(c *gin.Context) {
 
 	// 分页参数 @author ygw
 	page := 1
-	pageSize := 100
+	pageSize := 1000
 	if pageParam := c.Query("page"); pageParam != "" {
 		if p, err := strconv.Atoi(pageParam); err == nil && p > 0 {
 			page = p
@@ -338,8 +338,8 @@ func (s *Server) handleListAccounts(c *gin.Context) {
 	if pageSizeParam := c.Query("pageSize"); pageSizeParam != "" {
 		if ps, err := strconv.Atoi(pageSizeParam); err == nil && ps > 0 {
 			pageSize = ps
-			if pageSize > 500 {
-				pageSize = 500 // 限制最大每页数量
+			if pageSize > 1000 {
+				pageSize = 1000 // 限制最大每页数量
 			}
 		}
 	}
@@ -1838,16 +1838,18 @@ func (s *Server) handleGetSettings(c *gin.Context) {
 func (s *Server) handleGetModels(c *gin.Context) {
 	logger.Info("获取模型列表 - 请求来源: %s", c.ClientIP())
 
-	models := []gin.H{
-		{"id": "auto", "name": "自动选择", "description": "自动选择最佳模型", "default": false, "thinking": false},
-		{"id": "claude-opus-4.5", "name": "Claude Opus 4.5", "description": "最强推理能力", "default": false, "thinking": false},
-		{"id": "claude-opus-4.5-think", "name": "Claude Opus 4.5 (Think)", "description": "最强推理+深度思考", "default": true, "thinking": true, "baseModel": "claude-opus-4.5"},
-		{"id": "claude-sonnet-4.5", "name": "Claude Sonnet 4.5", "description": "平衡性能与速度", "default": false, "thinking": false},
-		{"id": "claude-sonnet-4.5-think", "name": "Claude Sonnet 4.5 (Think)", "description": "平衡性能+深度思考", "default": false, "thinking": true, "baseModel": "claude-sonnet-4.5"},
-		{"id": "claude-haiku-4.5", "name": "Claude Haiku 4.5", "description": "轻量高效", "default": false, "thinking": false},
+	modelList := []gin.H{
+		{"id": "claude-opus-4-5", "object": "model", "owned_by": "kiro"},
+		{"id": "claude-opus-4-5-thinking", "object": "model", "owned_by": "kiro"},
+		{"id": "claude-sonnet-4-5", "object": "model", "owned_by": "kiro"},
+		{"id": "claude-sonnet-4-5-thinking", "object": "model", "owned_by": "kiro"},
+		{"id": "claude-haiku-4-5", "object": "model", "owned_by": "kiro"},
 	}
 
-	c.JSON(200, gin.H{"models": models})
+	c.JSON(200, gin.H{
+		"object": "list",
+		"data":   modelList,
+	})
 }
 
 // handleUpdateSettings 更新系统设置
@@ -1916,7 +1918,6 @@ func (s *Server) handleUpdateSettings(c *gin.Context) {
 
 	c.JSON(200, settings)
 }
-
 
 // handleClaudeMessages 处理 Claude Messages API 端点
 func (s *Server) handleClaudeMessages(c *gin.Context) {
@@ -4504,4 +4505,3 @@ func (s *Server) handleToggleProxy(c *gin.Context) {
 // 		}
 // 	}
 // }
-

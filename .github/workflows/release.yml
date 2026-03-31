@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整历史用于生成 changelog
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y zip
+
+      - name: Build server
+        run: |
+          chmod +x build.sh
+          ./build.sh all-server -v ${{ steps.get_version.outputs.VERSION }}
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # 找到上一个 tag
+          PREV_TAG=$(git tag --sort=-v:refname | sed -n '2p')
+          if [ -z "$PREV_TAG" ]; then
+            RANGE="HEAD"
+          else
+            RANGE="${PREV_TAG}..HEAD"
+          fi
+
+          # 获取所有 commit，去掉 emoji 前缀，按 Angular commit 类型分类
+          CHANGELOG=""
+          for TYPE_LABEL in "feat:Features" "fix:Bug Fixes" "perf:Performance" "refactor:Refactor" "docs:Documentation" "test:Tests" "ci:CI" "build:Build" "chore:Chores"; do
+            TYPE="${TYPE_LABEL%%:*}"
+            LABEL="${TYPE_LABEL##*:}"
+            ITEMS=$(git log "$RANGE" --pretty=format:"%s|%h" | sed 's/^[^a-zA-Z]*//' | grep -E "^${TYPE}(\(|:)" | sed 's/\(.*\)|\(.*\)/- \1 (\2)/' || true)
+            if [ -n "$ITEMS" ]; then
+              CHANGELOG="${CHANGELOG}## ${LABEL}\n${ITEMS}\n\n"
+            fi
+          done
+
+          if [ -z "$CHANGELOG" ]; then
+            ALL=$(git log "$RANGE" --pretty=format:"- %s (%h)")
+            CHANGELOG="## Changes\n${ALL}\n"
+          fi
+
+          # 保存到文件
+          echo -e "$CHANGELOG" > CHANGELOG.md
+
+          # 输出到 GitHub Actions
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          cat CHANGELOG.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ steps.get_version.outputs.VERSION }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
+          files: |
+            dist/server/claude-server-linux-amd64
+            dist/server/claude-server-darwin-amd64
+            dist/server/claude-server-darwin-arm64
+            dist/server/claude-server-windows-amd64.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

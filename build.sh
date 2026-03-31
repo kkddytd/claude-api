@@ -128,7 +128,7 @@ parse_args() {
                 print_help
                 exit 0
                 ;;
-            server|desktop|license-server|all|clean)
+            server|desktop|license-server|all|clean|all-server)
                 TARGET="$1"
                 shift
                 ;;
@@ -244,18 +244,8 @@ build_server() {
     
     go build -ldflags="-s -w -X main.Version=$version" \
         -o "$DIST_DIR/server/$output_name" .
-    
-    # 打包
-    cd "$DIST_DIR/server"
-    if [ "$goos" = "windows" ]; then
-        zip -q "${output_name%.exe}.zip" "$output_name"
-        rm "$output_name"
-        log_success "Server [$platform] -> $DIST_DIR/server/${output_name%.exe}.zip"
-    else
-        tar -czf "$output_name.tar.gz" "$output_name"
-        rm "$output_name"
-        log_success "Server [$platform] -> $DIST_DIR/server/$output_name.tar.gz"
-    fi
+
+    log_success "Server [$platform] -> $DIST_DIR/server/$output_name"
     
     update_cache "server" "$platform"
 }
@@ -489,9 +479,10 @@ verify_build() {
     
     case "$TARGET" in
         server)
-            expected_files+=("$DIST_DIR/server/claude-server-$CURRENT_OS-$CURRENT_ARCH.tar.gz")
-            if [ "$CURRENT_OS" = "darwin" ]; then
-                expected_files+=("$DIST_DIR/server/claude-server-darwin-$CURRENT_ARCH.tar.gz")
+            if [ "$CURRENT_OS" = "windows" ]; then
+                expected_files+=("$DIST_DIR/server/claude-server-$CURRENT_OS-$CURRENT_ARCH.exe")
+            else
+                expected_files+=("$DIST_DIR/server/claude-server-$CURRENT_OS-$CURRENT_ARCH")
             fi
             ;;
         desktop)
@@ -505,10 +496,10 @@ verify_build() {
             ;;
         all)
             # Server 所有平台
-            expected_files+=("$DIST_DIR/server/claude-server-linux-amd64.tar.gz")
-            expected_files+=("$DIST_DIR/server/claude-server-darwin-amd64.tar.gz")
-            expected_files+=("$DIST_DIR/server/claude-server-darwin-arm64.tar.gz")
-            expected_files+=("$DIST_DIR/server/claude-server-windows-amd64.zip")
+            expected_files+=("$DIST_DIR/server/claude-server-linux-amd64")
+            expected_files+=("$DIST_DIR/server/claude-server-darwin-amd64")
+            expected_files+=("$DIST_DIR/server/claude-server-darwin-arm64")
+            expected_files+=("$DIST_DIR/server/claude-server-windows-amd64.exe")
             # Desktop
             if [ "$CURRENT_OS" = "darwin" ]; then
                 expected_files+=("$DIST_DIR/desktop/Claude-API-Server-macOS-$CURRENT_ARCH.zip")
@@ -520,7 +511,7 @@ verify_build() {
         *)
             # 默认构建
             if [ "$CURRENT_OS" = "darwin" ]; then
-                expected_files+=("$DIST_DIR/server/claude-server-darwin-$CURRENT_ARCH.tar.gz")
+                expected_files+=("$DIST_DIR/server/claude-server-darwin-$CURRENT_ARCH")
                 expected_files+=("$DIST_DIR/desktop/Claude-API-Server-macOS-$CURRENT_ARCH.zip")
                 expected_files+=("$DIST_DIR/desktop/Claude-API-Server-Windows-amd64.zip")
             fi
@@ -532,6 +523,7 @@ verify_build() {
     echo ""
     
     for file in "${expected_files[@]}"; do
+        echo $file
         if [ -f "$file" ]; then
             local size=$(ls -lh "$file" 2>/dev/null | awk '{print $5}')
             echo -e "  ${GREEN}✓${NC} $(basename "$file") ($size)"
@@ -598,7 +590,8 @@ main() {
                 IFS='/' read -r goos goarch <<< "$PLATFORM"
                 build_server "$goos" "$goarch"
             else
-                build_server "$CURRENT_OS" "$CURRENT_ARCH"
+                # 构建所有平台的 server
+                build_all_servers
             fi
             ;;
         desktop)
@@ -622,6 +615,9 @@ main() {
             else
                 build_license_server "$CURRENT_OS" "$CURRENT_ARCH"
             fi
+            ;;
+        all-server)
+            build_all_servers
             ;;
         all)
             build_all_servers

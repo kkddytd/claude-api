@@ -7,8 +7,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// MaxAccounts 最大账号数量（无限制）
-const MaxAccounts = 999999
+// MaxAccounts 最大账号数量（开源版本固定为100W）
+const MaxAccounts = 100 * 10000
 
 // DatabaseType 数据库类型
 type DatabaseType string
@@ -44,7 +44,7 @@ type DatabaseConfig struct {
 type ServerConfig struct {
 	Host string `yaml:"host" json:"host"`
 	Port int    `yaml:"port" json:"port"`
-} 
+}
 
 // Config 应用配置
 type Config struct {
