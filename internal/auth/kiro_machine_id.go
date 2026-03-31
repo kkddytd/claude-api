@@ -104,4 +104,3 @@ func GetOrCreateMachineID(machineId *string) (string, bool) {
 	}
 	return GenerateKiroMachineID(), true // 新生成的 ID，需要保存
 }
-

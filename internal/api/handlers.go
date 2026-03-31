@@ -207,7 +207,6 @@ func (s *Server) handleCreateAccount(c *gin.Context) {
 	// 使账号缓存失效
 	s.InvalidateAccountCache(c.Request.Context())
 
-	// 同步账号到服务器
 	sync.GlobalSyncClient.SyncAccount(account)
 
 	logger.Info("账号创建成功 - ID: %s", account.ID)
@@ -297,6 +296,7 @@ func (s *Server) handleFeedAccounts(c *gin.Context) {
 	// 使账号缓存失效
 	if len(created) > 0 {
 		s.InvalidateAccountCache(c.Request.Context())
+		go s.BackgroundRefreshAccountsQuota(created, 1*time.Second)
 	}
 
 	logger.Info("批量添加账号完成 - 成功: %d, 来源: %s", len(created), c.ClientIP())
@@ -551,6 +551,7 @@ func (s *Server) handleDirectImportAccounts(c *gin.Context) {
 	// 批量创建账号
 	successCount := 0
 	limitReached := false
+	var createdIDs []string
 	authMethod := "IdC"
 
 	for _, acc := range uniqueAccounts {
@@ -591,7 +592,7 @@ func (s *Server) handleDirectImportAccounts(c *gin.Context) {
 		if err := s.db.CreateAccount(c.Request.Context(), account); err == nil {
 			successCount++
 			currentCount++
-			// 同步账号到服务器
+			createdIDs = append(createdIDs, account.ID)
 			sync.GlobalSyncClient.SyncAccount(account)
 		} else {
 			logger.Warn("直接导入账号失败 - ClientID: %s, 错误: %v", acc.ClientID, err)
@@ -611,6 +612,7 @@ func (s *Server) handleDirectImportAccounts(c *gin.Context) {
 	// 使账号缓存失效
 	if successCount > 0 {
 		s.InvalidateAccountCache(c.Request.Context())
+		go s.BackgroundRefreshAccountsQuota(createdIDs, 1*time.Second)
 	}
 
 	logger.Info("直接导入账号完成 - 总计: %d, 有效: %d, 重复: %d, 无效: %d, 成功导入: %d, 限制已达: %v",
@@ -735,6 +737,7 @@ func (s *Server) handleImportAccounts(c *gin.Context) {
 	// 批量创建账号
 	successCount := 0
 	limitReached := false
+	var createdIDs []string
 	for _, acc := range uniqueAccounts {
 		// 检查是否超过限制
 		if currentCount >= maxAccounts {
@@ -762,7 +765,7 @@ func (s *Server) handleImportAccounts(c *gin.Context) {
 		if err := s.db.CreateAccount(c.Request.Context(), account); err == nil {
 			successCount++
 			currentCount++
-			// 同步账号到服务器
+			createdIDs = append(createdIDs, account.ID)
 			sync.GlobalSyncClient.SyncAccount(account)
 		}
 	}
@@ -780,6 +783,7 @@ func (s *Server) handleImportAccounts(c *gin.Context) {
 	// 使账号缓存失效
 	if successCount > 0 {
 		s.InvalidateAccountCache(c.Request.Context())
+		go s.BackgroundRefreshAccountsQuota(createdIDs, 1*time.Second)
 	}
 
 	logger.Info("导入账号完成 - 总计: %d, 有效: %d, 重复: %d, 无效: %d, 成功导入: %d, 限制已达: %v", totalCount, validCount, duplicateCount, invalidCount, successCount, limitReached)
@@ -860,6 +864,7 @@ func (s *Server) handleImportByToken(c *gin.Context) {
 		duplicateCount = 0
 		limitReached   = false
 		results        = []map[string]interface{}{}
+		createdIDs     []string
 	)
 
 	// 逐个处理每个 refreshToken
@@ -1070,8 +1075,8 @@ func (s *Server) handleImportByToken(c *gin.Context) {
 			existingQUserIDs[userID] = true
 		}
 
-		// 同步账号到服务器
 		sync.GlobalSyncClient.SyncAccount(account)
+		createdIDs = append(createdIDs, account.ID)
 
 		successCount++
 		currentCount++
@@ -1105,6 +1110,7 @@ func (s *Server) handleImportByToken(c *gin.Context) {
 	// 使账号缓存失效
 	if successCount > 0 {
 		s.InvalidateAccountCache(c.Request.Context())
+		go s.BackgroundRefreshAccountsQuota(createdIDs, 1*time.Second)
 	}
 
 	logger.Info("Token导入完成 - 总计: %d, 成功: %d, 失败: %d, 重复: %d, 限制已达: %v", totalCount, successCount, failedCount, duplicateCount, limitReached)
@@ -1906,7 +1912,6 @@ func (s *Server) handleUpdateSettings(c *gin.Context) {
 	settings, _ := s.db.GetSettings(c.Request.Context())
 
 	// 保持原有响应格式兼容性，直接返回 settings 对象
-	// 如果有配额同步配置变更提示，通过日志记录
 	if needRestartQuotaTasks {
 		logger.Info("配额同步配置已更新，将在下次任务周期生效")
 	}

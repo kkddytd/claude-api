@@ -203,4 +203,3 @@ func ExtractEventType(headers map[string]interface{}) string {
 	}
 	return ""
 }
-

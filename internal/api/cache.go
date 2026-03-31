@@ -1,11 +1,11 @@
 package api
 
 import (
-	"context"
-	"math/rand"
 	"claude-api/internal/database"
 	"claude-api/internal/logger"
 	"claude-api/internal/models"
+	"context"
+	"math/rand"
 	"sort"
 	"sync"
 	"sync/atomic"
@@ -87,7 +87,7 @@ func (p *AccountPool) Start(ctx context.Context) {
 // Refresh 刷新账号缓存
 func (p *AccountPool) Refresh(ctx context.Context) {
 	startTime := time.Now()
-	
+
 	// 防止并发刷新
 	if !p.refreshing.CompareAndSwap(false, true) {
 		return

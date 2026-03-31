@@ -1,9 +1,9 @@
 package database
 
 import (
-	"context"
 	"claude-api/internal/logger"
 	"claude-api/internal/models"
+	"context"
 	"time"
 
 	"gorm.io/gorm"
@@ -544,4 +544,3 @@ func applyLogFilters(filters *models.LogFilters) (string, []interface{}) {
 
 	return query, args
 }
-

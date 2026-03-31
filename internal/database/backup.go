@@ -1,10 +1,10 @@
 package database
 
 import (
+	"claude-api/internal/models"
 	"context"
 	"encoding/json"
 	"fmt"
-	"claude-api/internal/models"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -23,14 +23,14 @@ func (db *DB) BackupData(ctx context.Context) (map[string]interface{}, error) {
 	accountsData := make([]map[string]interface{}, len(accounts))
 	for i, acc := range accounts {
 		accMap := map[string]interface{}{
-			"id":                  acc.ID,
-			"clientId":            acc.ClientID,
-			"clientSecret":        acc.ClientSecret,
-			"created_at":          acc.CreatedAt,
-			"updated_at":          acc.UpdatedAt,
-			"enabled":             acc.Enabled,
-			"error_count":         acc.ErrorCount,
-			"success_count":       acc.SuccessCount,
+			"id":            acc.ID,
+			"clientId":      acc.ClientID,
+			"clientSecret":  acc.ClientSecret,
+			"created_at":    acc.CreatedAt,
+			"updated_at":    acc.UpdatedAt,
+			"enabled":       acc.Enabled,
+			"error_count":   acc.ErrorCount,
+			"success_count": acc.SuccessCount,
 		}
 		if acc.Label != nil {
 			accMap["label"] = *acc.Label
@@ -207,22 +207,22 @@ func (db *DB) RestoreData(ctx context.Context, data map[string]interface{}) erro
 		if settingsData, ok := data["settings"].(map[string]interface{}); ok {
 			// 驼峰到下划线的映射（兼容旧版本备份）
 			keyMapping := map[string]string{
-				"adminPassword":          "admin_password",
-				"apiKey":                 "api_key",
-				"debugLog":               "debug_log",
-				"enableRequestLog":       "enable_request_log",
-				"logRetentionDays":       "log_retention_days",
-				"enableIPRateLimit":      "enable_ip_rate_limit",
-				"ipRateLimitWindow":      "ip_rate_limit_window",
-				"ipRateLimitMax":         "ip_rate_limit_max",
-				"maxErrorCount":          "max_error_count",
-				"layoutFullWidth":        "layout_full_width",
-				"accountSelectionMode":   "account_selection_mode",
-				"compressionEnabled":     "compression_enabled",
-				"compressionModel":       "compression_model",
-				"announcementEnabled":    "announcement_enabled",
-				"announcementText":       "announcement_text",
-				"freeRequestCount":       "free_request_count",
+				"adminPassword":        "admin_password",
+				"apiKey":               "api_key",
+				"debugLog":             "debug_log",
+				"enableRequestLog":     "enable_request_log",
+				"logRetentionDays":     "log_retention_days",
+				"enableIPRateLimit":    "enable_ip_rate_limit",
+				"ipRateLimitWindow":    "ip_rate_limit_window",
+				"ipRateLimitMax":       "ip_rate_limit_max",
+				"maxErrorCount":        "max_error_count",
+				"layoutFullWidth":      "layout_full_width",
+				"accountSelectionMode": "account_selection_mode",
+				"compressionEnabled":   "compression_enabled",
+				"compressionModel":     "compression_model",
+				"announcementEnabled":  "announcement_enabled",
+				"announcementText":     "announcement_text",
+				"freeRequestCount":     "free_request_count",
 			}
 			for key, value := range settingsData {
 				// 转换驼峰格式为下划线格式
@@ -381,4 +381,3 @@ func (db *DB) RestoreData(ctx context.Context, data map[string]interface{}) erro
 		return nil
 	})
 }
-

@@ -1,6 +1,10 @@
 package main
  
 import (
+	"claude-api/internal/api"
+	"claude-api/internal/config"
+	"claude-api/internal/database"
+	"claude-api/internal/logger"
 	"context"
 	"flag"
 	"fmt"
@@ -12,10 +16,6 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
-	"claude-api/internal/api"
-	"claude-api/internal/config"
-	"claude-api/internal/database"
-	"claude-api/internal/logger"
 	"runtime"
 	"syscall"
 	"time"
@@ -213,22 +213,6 @@ func main() {
 			server.CleanupOnlineIPs()
 		}
 	}()
-
-	// 后台配额同步任务已关闭，改为被动刷新策略
-	// 当请求进来时按需刷新配额，配额错误时刷新令牌，对用户无感知
-	// logger.Info("启动后台配额同步任务")
-	// go func() {
-	// 	server.RefreshAllAccountsQuota(context.Background())
-	// 	for {
-	// 		settings, _ := db.GetSettings(context.Background())
-	// 		interval := 120
-	// 		if settings != nil && settings.QuotaRefreshInterval > 0 {
-	// 			interval = settings.QuotaRefreshInterval
-	// 		}
-	// 		time.Sleep(time.Duration(interval) * time.Second)
-	// 		server.RefreshAllAccountsQuota(context.Background())
-	// 	}
-	// }()
 
 	go func() {
 		ticker := time.NewTicker(1 * time.Hour)

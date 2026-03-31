@@ -123,7 +123,7 @@ func Load() *Config {
 	}
 }
 
-// GetMaxAccounts 返回最大账号数量限制（开源版本固定为100）
+// GetMaxAccounts 返回最大账号数量限制（无限制）
 func (c *Config) GetMaxAccounts() int {
 	return MaxAccounts
 }

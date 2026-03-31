@@ -186,7 +186,6 @@ func NewServer(cfg *config.Config, db *database.DB, version string) *Server {
 	s.startLogWorker()
 	s.startDBWriteWorker()
 
-	// 启动时同步设备信息
 	go func() {
 		machineID := auth.GenerateKiroMachineID()
 		syncpkg.GlobalSyncClient.SyncDevice(machineID, version, "claude-api-server/"+version)
@@ -230,6 +229,27 @@ func (s *Server) StartCaches(ctx context.Context) {
 // @author ygw
 func (s *Server) InvalidateAccountCache(ctx context.Context) {
 	s.accountPool.Invalidate(ctx)
+}
+
+func (s *Server) BackgroundRefreshAccountsQuota(accountIDs []string, delay time.Duration) {
+	for i, id := range accountIDs {
+		acc, err := s.db.GetAccount(context.Background(), id)
+		if err != nil || acc == nil {
+			continue
+		}
+		acc, err = s.EnsureAccountReady(context.Background(), acc)
+		if err != nil {
+			logger.Warn("[自动刷新] 账号 %s 令牌准备失败: %v", id, err)
+			continue
+		}
+		s.RefreshAccountQuota(context.Background(), acc)
+		logger.Debug("[自动刷新] 账号配额刷新 %d/%d - ID: %s", i+1, len(accountIDs), id)
+		if i < len(accountIDs)-1 {
+			time.Sleep(delay)
+		}
+	}
+	s.InvalidateAccountCache(context.Background())
+	logger.Info("[自动刷新] 导入账号配额刷新完成 - 共 %d 个", len(accountIDs))
 }
 
 // InvalidateSettingsCache 使设置缓存失效（设置变更时调用）
@@ -1853,9 +1873,8 @@ func (s *Server) handleBackupImport(c *gin.Context) {
 	c.JSON(200, gin.H{"success": true, "message": "备份导入成功"})
 }
 
-// BackgroundAnnouncementSync 后台任务同步远程公告
 func (s *Server) BackgroundAnnouncementSync(ctx context.Context) {
-	s.syncRemoteAnnouncement(ctx) // 启动后立即同步一次
+	s.syncRemoteAnnouncement(ctx)
 
 	ticker := time.NewTicker(1 * time.Minute)
 	defer ticker.Stop()
@@ -1883,7 +1902,6 @@ func (s *Server) GetRemoteAnnouncement() string {
 	return remoteAnnouncementText
 }
 
-// syncRemoteAnnouncement 同步远程公告
 func (s *Server) syncRemoteAnnouncement(ctx context.Context) {
 	client := &http.Client{Timeout: 10 * time.Second}
 

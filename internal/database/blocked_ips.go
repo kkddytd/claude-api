@@ -1,8 +1,8 @@
 package database
 
 import (
-	"context"
 	"claude-api/internal/models"
+	"context"
 
 	"gorm.io/gorm"
 )
@@ -204,4 +204,3 @@ func (db *DB) backupImportedAccounts(ctx context.Context) ([]map[string]interfac
 	}
 	return result, nil
 }
-
